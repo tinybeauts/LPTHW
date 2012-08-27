@@ -62,8 +62,11 @@ def start():
 		make_move(0, 100)
 	elif play == "no" or "coward" in play:
 		dead("\nin addition to being a coward, you are lazy.")
+	elif play == "quit" or play == "stop":
+		dead("okay. come back to solve another murder another time.")
 	else:
-		dead("\nthat wasn't an option. vengeance is reserved for those who can read.")
+		print "\nthat wasn't an option. let's try again."
+		start()
 
 def pick_character():
 	print "\ngreat! thanks for your help mr... wait, which guest are you?"
@@ -81,18 +84,25 @@ def pick_character():
 			char = poss_chars[char - 1]
 			print "\ngreat! thanks for your help %s." % char
 		elif char == 7:
-			dead("\noops. you're supposed to be dead dr. black!")
+			print "\noops. you're supposed to be dead dr. black! let's try again."
+			pick_character()
 		else:
-			dead("\nthat wasn't an option. vengeance is reserved for those who can count.")
+			print "\nthat wasn't an option. let's try again."
+			pick_character()
 	
 	elif char in all_chars and char != 'dr. black':
 		print "\ngreat! thanks for your help %s." % char
 	
 	elif char in all_chars and char == 'dr. black':
-		dead("\noops. you're supposed to be dead dr. black!")
-		
+		print "\noops. you're supposed to be dead dr. black! let's try again."
+		pick_character()
+	
+	elif char == "quit" or char == "stop":
+		dead("okay. come back to solve another murder another time.")
+
 	else:
-		dead("\nthat wasn't an option. vengeance is reserved for those who can spell.")
+		print "\nthat wasn't an option. let's try to improve our spelling."
+		pick_character()
 
 def give_info(want_help):
 	if want_help == 1:
@@ -117,14 +127,20 @@ def give_info(want_help):
 			want_to_know = 4
 		elif "rule" in want_to_know:
 			want_to_know = 5
+		elif want_to_know == "quit" or char == "stop":
+			dead("okay. come back to solve another murder another time.")
 		else:
-			dead("that wasn't an option. vengeance will not be yours today.")
+			print "that wasn't an option. let's try again."
+			get_help()
 		
 		info_cycle(want_to_know)
 	elif want_help == 0:
 		print "\nokay, let's go!"
+	elif char == "quit" or char == "stop":
+		dead("okay. come back to solve another murder another time.")
 	else:
-		dead("impossible. you're useless!")
+		print "impossible. you're useless! try again."
+		get_help()
 	
 def info_cycle(want_to_know):
 	if want_to_know == 1:
@@ -158,8 +174,11 @@ def info_cycle(want_to_know):
 		print "pay attention to their guesses so you don't repeat them."
 		print "when you think you've solved the mystery, move to the cellar and guess."
 		print "but hurry, you have to figure it out before someone else does."
+	elif want_to_know == "quit" or want_to_know == "stop":
+		dead("okay. come back to solve another murder another time.")
 	else:
-		dead("that wasn't an option. vengeance is reserved for those who can count.")
+		print "that wasn't an option. try again!"
+		get_help()
 	
 	get_help()
 	
@@ -173,8 +192,11 @@ def get_help():
 		give_info(1)
 	elif want_help == "no" or "n" in want_help:
 		give_info(0)
+	elif want_help == "quit" or want_help == "stop":
+		dead("okay. come back to solve another murder another time.")	
 	else:
-		dead("that wasn't an option. no vengeance for you today.")
+		print "that wasn't an option. let's try again."
+		get_help()
 	
 def make_move(step, room_number):
 	if step == 0:
@@ -197,17 +219,20 @@ def make_move(step, room_number):
 				room_number = (room_number + 1) % 8
 				print "great! you are in the %s." % change_room
 				guess(room_number)
-			elif change_room == "cellar":
+			elif change_room == "cellar" or change_room == 10:
 				room_number = 9
 				guess(room_number)
 			elif change_room == "stay" or change_room == poss_rooms[room_number]:
 				room_number = room_number
 				print "great! you are staying in the %s." % poss_rooms[room_number]
 				guess(room_number)
+			elif change_room == "quit" or change_room == "stop":
+				dead("okay. come back to solve another murder another time.")
 			else:
-				dead("that wasn't an option. vengeance is reserved for those who can read.")
+				print "not sure what you meant by that. try again."
+				make_move(step, room_number)
 		else:
-			dead("xxx")
+			dead("oops. something is really wrong.")
 
 def first_room():
 	char_index = poss_chars.index(char)
@@ -221,8 +246,11 @@ def first_room():
 		assign_room(0)
 	elif word_room_opts[1] in room_choice or room_choice in word_room_opts[1]:
 		assign_room(1)
+	elif room_choice == "quit" or room_choice == "stop":
+		dead("okay. come back to solve another murder another time.")
 	else:
-		dead("that's not a room. you should just go.")
+		print "that's not a room. try again!"
+		first_room()
 
 def assign_room(opt):
 	char_index = poss_chars.index(char)
@@ -262,18 +290,25 @@ def check_murderer(check_guess, room_number):
 		if guess_murderer in range(1, 7):
 			guess_murderer = poss_chars[guess_murderer - 1]
 		elif guess_murderer == 7:
-			dead("\noops. you're supposed to be dead dr. black!")
+			print "\noops. dr. black is dead! do you really think it was suicide?"
+			check_murderer(check_guess, room_number)
 		else:
-			dead("\nthat wasn't an option. vengeance is reserved for those who can count.")
+			print "\nthat wasn't an option. let's try a little harder."
+			check_murderer(check_guess, room_number)
 	
 	elif guess_murderer in all_chars and guess_murderer != 'dr. black':
 		guess_murderer = guess_murderer
 	
 	elif guess_murderer in all_chars and guess_murderer == 'dr. black':
-		dead("\noops. you're supposed to be dead dr. black!")
+		print "\noops. dr. black is dead! do you really think it was suicide?"
+		check_murderer(check_guess, room_number)
+
+	elif guess_murderer == "quit" or guess_murderer == "stop":
+		dead("okay. come back to solve another murder another time.")
 		
 	else:
-		dead("\nthat wasn't an option. vengeance is reserved for those who can spell.")
+		print "\nthat wasn't an option. let's try a little harder."
+		check_murderer(check_guess, room_number)
 	
 	if guess_murderer == murderer:
 		check_guess[0] = 1
@@ -297,13 +332,18 @@ def check_weapon(check_guess, room_number, guess_murderer):
 		if guess_weapon in range(1, 7):
 			guess_weapon = all_weapons[guess_weapon - 1]
 		else:
-			dead("\nthat wasn't an option. vengeance is reserved for those who can count.")
+			print "\nthat wasn't an option. let's try a little harder."
+			check_weapon(check_guess, room_number, guess_murderer)
 	
 	elif guess_weapon in all_weapons:
 		guess_weapon = guess_weapon
-		
+
+	elif guess_weapon == "quit" or guess_weapon == "stop":
+		dead("okay. come back to solve another murder another time.")
+	
 	else:
-		dead("\nthat wasn't an option. vengeance is reserved for those who can spell.")
+		print "\nnot sure what you meant by that. why don't you try again."
+		check_weapon(check_guess, room_number, guess_murderer)
 	
 	if guess_weapon == murder_weapon:
 		check_guess[1] = 1
@@ -328,12 +368,16 @@ def check_room(check_guess, room_number, guess_murderer, guess_weapon):
 			guess_room = poss_rooms[guess_room - 1]
 			check_room_number = poss_rooms.index(guess_room)
 		else:
-			dead("\nthat wasn't an option. vengeance is reserved for those who can count.")
+			print "\nthat wasn't an option. let's try a little harder."
+			check_room(check_guess, room_number, guess_murderer, guess_weapon)
 	elif guess_room in poss_rooms:
 		guess_room = guess_room
-		check_room_number = poss_rooms.index(guess_room)
+		check_room_number = poss_rooms.index(guess_room)	
+	elif guess_room == "quit" or guess_room == "stop":
+		dead("okay. come back to solve another murder another time.")
 	else:
-		dead("\nthat wasn't an option. vengeance is reserved for those who can spell.")
+		print "\ndon't know what you meant by that. try again please."
+		check_room(check_guess, room_number, guess_murderer, guess_weapon)
 	
 	if room_number != 9:
 		if check_room_number == room_number:
@@ -357,6 +401,8 @@ def disprove_guess(check_guess, room_number, guess_murderer, guess_weapon, guess
 		print "\nlet's check if any of the guests can prove your guess is wrong."
 		if check_guess == [1, 1, 1]:
 			print "\nno one can prove you wrong."
+			print "you should move to the cellar and make your final guess."
+			players_guess(room_number)
 		else:
 			char_number = poss_chars.index(char)
 			if guess_murderer in players_cards[char_number]:
@@ -398,15 +444,17 @@ def players_guess(room_number):
 			print "\n%s guesses that it was %s with the %s in the %s." % (poss_chars[i],
 			char_guess[i][0], char_guess[i][1], char_guess[i][2])
 			for x in range(0, len(poss_chars)):
-				if char_guess[i][0] in players_cards[x]:
-					print "%s can prove it wasn't %s." % (poss_chars[x], char_guess[i][0])
+				if char_guess[i][0] in players_cards[x] or char_guess[i][1] in players_cards[x] \
+				or char_guess[i][2] in players_cards[x]:
+					# print "%s can prove it wasn't %s." % (poss_chars[x], char_guess[i][0])
+					print "%s can prove %s is wrong." % (poss_chars[x], poss_chars[i])
 					break
-				elif char_guess[i][1] in players_cards[x]:
-					print "%s can prove it wasn't the %s." % (poss_chars[x], char_guess[i][1])
-					break
-				elif char_guess[i][2] in players_cards[x]:
-					print "%s can prove it wasn't the %s." % (poss_chars[x], char_guess[i][2])
-					break
+				# elif char_guess[i][1] in players_cards[x]:
+				# 	print "%s can prove it wasn't the %s." % (poss_chars[x], char_guess[i][1])
+				# 	break
+				# elif char_guess[i][2] in players_cards[x]:
+				# 	print "%s can prove it wasn't the %s." % (poss_chars[x], char_guess[i][2])
+				# 	break
 				else:
 					print "%s can't help." % poss_chars[x]
 	make_move(1, room_number)
