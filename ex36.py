@@ -464,3 +464,9 @@ def dead(why):
 	exit(0)
 	
 start()
+
+# Things to Add:
+
+# It should ask you if you can prove the guess wrong
+# Since you have to guess the room you're in, make it bold
+# The other characters shouldn't guess things in their own clues
