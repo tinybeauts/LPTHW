@@ -9,7 +9,7 @@ import orange
 import brown
 import yellow
 
-color = ['Pink', 'Green', 'Blue', 'Orange', 'Brown', 'Yellow']
+color = ['Red', 'Green', 'Blue', 'Orange', 'Purple', 'Yellow']
 
 ## Start
 
@@ -83,7 +83,7 @@ class Check(object):
 		
 		y_n = raw_input("> ")
 		
-		if y_n == 'Yes' or y_n == 'yes' or y_n == 'y'or y_n == adjusted_input.title():
+		if y_n == 'Yes' or y_n == 'yes' or y_n == 'y'or y_n == adjusted_input.lower():
 			color_choice = adjusted_input
 			print color_choice
 		elif y_n == 'No' or y_n == 'no' or y_n == 'n':
